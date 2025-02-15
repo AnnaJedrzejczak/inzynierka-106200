@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jakiego filmu dzisiaj szukasz?</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            background-color: #e7cfcf;
+            padding: 20px;
+        }
+        #chat-container {
+            width: 80%;
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        #chatbox { 
+            height: 400px; 
+            overflow-y: auto; 
+            border: 1px solid #ccc; 
+            padding: 10px;
+            text-align: left;
+            background: #fff;
+            border-radius: 5px;
+        }
+        #user-input { 
+            width: 70%; 
+            padding: 10px; 
+            margin-top: 10px;
+        }
+        #send-btn { 
+            padding: 10px; 
+            cursor: pointer;
+            background-color: #5900ff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-left: 5px;
+        }
+        #send-btn:hover {
+            background-color: #0056b3;
+        }
+        #footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+        img {
+            max-width: 200px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Dodany obrazek -->
+    <img src="{{ url_for('static', filename='3d_Movie.png') }}">
+
+    <div id="chat-container">
+        <h1>Jakiego filmu dzisiaj szukasz?</h1>
+        <div id="chatbox"></div>
+        <input type="text" id="user-input" placeholder="Zadaj pytanie o film...">
+        <button id="send-btn">Wyślij</button>
+    </div>
+
+    <!-- Dodany tekst na dole strony -->
+    <div id="footer">
+        <p>Numer albumu: 106200 /// 2025 ©</p>
+    </div>
+
+    <script>
+        document.getElementById("send-btn").addEventListener("click", () => {
+            let inputField = document.getElementById("user-input");
+            let userMessage = inputField.value.trim();
+            let chatbox = document.getElementById("chatbox");
+
+            if (userMessage === "") return; // Nie wysyłaj pustej wiadomości
+
+            chatbox.innerHTML += "<p><strong>Ty:</strong> " + userMessage + "</p>";
+            inputField.value = "";
+
+            fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: userMessage })
+            })
+            .then(response => response.json())
+            .then(data => {
+                let formattedReply = data.reply.replace(/(\d+\.)/g, "<br>$1"); // Dodaje entery między numerowanymi punktami
+                chatbox.innerHTML += "<p><strong>ChatGPT:</strong> " + formattedReply + "</p>";
+                chatbox.scrollTop = chatbox.scrollHeight; // Auto-scroll na dół
+            })
+            .catch(error => {
+                chatbox.innerHTML += "<p><strong>Błąd:</strong> Nie udało się uzyskać odpowiedzi.</p>";
+                console.error("Błąd:", error);
+            });
+        });
+    </script>
+
+</body>
+</html>
