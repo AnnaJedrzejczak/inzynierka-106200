@@ -2,26 +2,24 @@ from flask import Flask, render_template, request, jsonify
 import openai
 import os
 from dotenv import load_dotenv
+from keywords import FILM_KEYWORDS  # Import listy słów kluczowych
 
 load_dotenv()  # Wczytanie klucza API z pliku .env
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 app = Flask(__name__)
 
-# Lista słów kluczowych związanych z filmami
-FILM_KEYWORDS = ["film", "kino", "aktor", "reżyser", "scenariusz", "gatunek", "Oscar", "serial", "seans", "adaptacja", "ekranizacja", "produkcja", "animacja"]
-
-@app.route("/")  # Ładuje stronę główną
+@app.route("/")  # Strona główna
 def home():
     return render_template("index.html")
 
-@app.route("/chat", methods=["POST"])  # Obsługuje zapytania użytkownika i wysyła je do ChatGPT.
+@app.route("/chat", methods=["POST"])  # Obsługuje zapytania użytkownika i wysyła je do ChatGPT
 def chat():
     user_message = request.json.get("message", "").strip().lower()
 
     # Sprawdzenie, czy pytanie użytkownika dotyczy filmów
     if not any(keyword in user_message for keyword in FILM_KEYWORDS):
-        return jsonify({"reply": "Przepraszam, ale mogę rozmawiać tylko o filmach. Zadaj pytanie związane z kinematografią!"})
+        return jsonify({"reply": "Przepraszam, ale mogę rozmawiać tylko o filmach. Zadaj pytanie związane z kinem!"})
 
     try:
         response = openai.ChatCompletion.create(
