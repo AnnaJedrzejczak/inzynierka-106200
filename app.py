@@ -3,7 +3,7 @@ import openai
 import os
 from dotenv import load_dotenv
 from keywords import FILM_KEYWORDS  # Import listy słów kluczowych
-import markdown
+import markdown # type: ignore
 
 load_dotenv()  # Wczytanie klucza API z pliku .env
 openai.api_key = os.getenv("OPENAI_API_KEY")
