@@ -3,6 +3,7 @@ import openai
 import os
 from dotenv import load_dotenv
 from keywords import FILM_KEYWORDS  # Import listy słów kluczowych
+import markdown
 
 load_dotenv()  # Wczytanie klucza API z pliku .env
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -33,7 +34,10 @@ def chat():
         # Zamiana pojedynczych nowych linii na podwójne, aby poprawnie formatować odpowiedzi
         chat_response = response["choices"][0]["message"]["content"].replace("\n", "\n\n")
 
-        return jsonify({"reply": chat_response})
+        # Konwersja Markdown na HTML
+        chat_response_html = markdown.markdown(chat_response)
+
+        return jsonify({"reply": chat_response_html})
 
     except Exception as e:
         return jsonify({"reply": f"Błąd: {str(e)}"})
