@@ -23,14 +23,17 @@ def chat():
 
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": "Jesteś ekspertem od filmów. Możesz odpowiadać TYLKO na pytania związane z filmami, aktorami, reżyserami, scenariuszami i gatunkami filmowymi. Jeśli użytkownik zapyta o coś spoza tej tematyki, grzecznie odmów odpowiedzi."},
                 {"role": "user", "content": user_message}
             ]
         )
 
-        return jsonify({"reply": response["choices"][0]["message"]["content"]})
+        # Zamiana pojedynczych nowych linii na podwójne, aby poprawnie formatować odpowiedzi
+        chat_response = response["choices"][0]["message"]["content"].replace("\n", "\n\n")
+
+        return jsonify({"reply": chat_response})
 
     except Exception as e:
         return jsonify({"reply": f"Błąd: {str(e)}"})
