@@ -26,7 +26,7 @@ def chat():
         response = openai.ChatCompletion.create(
             model="gpt-4o",
             messages=[
-                {"role": "system", "content": "Jesteś ekspertem od filmów. Możesz odpowiadać TYLKO na pytania związane z filmami, aktorami, reżyserami, scenariuszami i gatunkami filmowymi. Jeśli użytkownik zapyta o coś spoza tej tematyki, grzecznie odmów odpowiedzi."},
+                {"role": "system", "content": "Jesteś ekspertem od filmów. Możesz odpowiadać TYLKO na pytania związane z filmami, aktorami, reżyserami, scenariuszami i gatunkami filmowymi. Podawaj tylko prawdziwe tytuły. Jeśli użytkownik zapyta o coś spoza tej tematyki, grzecznie odmów odpowiedzi."},
                 {"role": "user", "content": user_message}
             ]
         )

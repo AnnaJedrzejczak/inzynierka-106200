@@ -16,4 +16,5 @@ FILM_KEYWORDS = [
     "antagonista", "protagonista", "narracja", "retrospekcja", "plot twist", "remake",
     "cliffhanger", "metamorfoza bohatera", "IMDb", "filmweb", "Rotten Tomatoes",
     "Metacritic", "rekomendacja", "lat", "scena", "box office", "sequel", "prequel"
+    "tytuł", "tematyka", "jaka jest różnica",
 ]
